@@ -7,7 +7,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 })
 export class PokemonDetailsComponent implements OnInit, OnChanges {
 
-  @Input('pokemonDetails') pokemonDetails;
+  @Input() pokemonDetails;
 
   constructor() { }
 

@@ -18,8 +18,8 @@ export class PokedexComponent implements OnInit {
   currentPage: number;
 
   constructor(
-    private pokeApiService: PokeApiService, 
-    private router: Router, 
+    private pokeApiService: PokeApiService,
+    private router: Router,
     private route: ActivatedRoute) {
       this.pokemonPage = [];
       this.pokemonDetails = '';
@@ -32,20 +32,21 @@ export class PokedexComponent implements OnInit {
     this.pokeApiService.getAllPokemons().subscribe(
       (res) => {
         this.pokemons = res;
-        for(let i = 0; i < 10; i++)
+        for (let i = 0; i < 10; i++) {
           this.pokemonPage.push(this.pokemons.results[i]);
+        }
       }
     );
-    /* pegando os detalhes do pokémon a partir do que é passado na rota (isso acontece toda vez 
+    /* pegando os detalhes do pokémon a partir do que é passado na rota (isso acontece toda vez
       que a rota é atualizada) */
     this.route.queryParams.subscribe(params => {
       this.pokeApiService.getPokemonDetails(params['pokemon']).subscribe(
         (res) => {
           this.pokemonDetails = res;
-          if(!this.isColapActive) {
+          if (!this.isColapActive) {
             console.log('hello');
             this.pokemonPage.map(pokemon => {
-              if(!(pokemon.name == this.pokemonDetails.name)) {
+              if (!(pokemon.name === this.pokemonDetails.name)) {
                 console.log(this.pokemonDetails.id % 10);
               }
             });
@@ -59,23 +60,25 @@ export class PokedexComponent implements OnInit {
     this.currentPage = pageNumber;
     let repage = (pageNumber * 10) - 10;
     this.pokemonPage = [];
-    for(let i = 0; i < 10 && this.pokemons.results[repage]; i++, repage++)
+    for (let i = 0; i < 10 && this.pokemons.results[repage]; i++, repage++) {
       this.pokemonPage.push(this.pokemons.results[repage]);
+    }
   }
 
   // pegando o pokemon que foi clicado e passando por query param seu nome
   collapsible() {
     this.collapsibleRef.items._results.map(
       (elem, index) => {
-        if(elem.childrenElement[0].className == 'active') {
+        if (elem.childrenElement[0].className === 'active') {
           this.isColapActive = true;
-          this.router.navigate(['/pokedex'], { 
-            queryParams: { 
+          this.router.navigate(['/pokedex'], {
+            queryParams: {
               pokemon: this.pokemonPage[index].name
-            } 
+            }
           });
-        } else
+        } else {
           this.isColapActive = false;
+        }
       }
     );
   }
