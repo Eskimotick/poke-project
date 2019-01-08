@@ -1,0 +1,28 @@
+<div class="center-align" *ngIf="this.pokemons">
+  <mz-pagination
+    (pageChange)="onPageChange($event)"
+    [currentPage]="currentPage"
+    [enableFirstAndLastPageButtons]="true"
+    [itemsPerPage]="10"
+    [maxPageButtons]="15"
+    [totalItems]="this.pokemons.results.length"
+  >
+  </mz-pagination>
+  <div class="container">
+    <mz-collapsible #collapsibleRef [mode]="'accordion'" [popout]="true" (click)="collapsible()">
+      <mz-collapsible-item *ngFor="let pokemon of pokemonPage; let i = index">
+        <mz-collapsible-item-header>{{ pokemon.name | titlecase }}</mz-collapsible-item-header>
+        <mz-collapsible-item-body>
+          <app-pokemon-details 
+            *ngIf="pokemon.name == pokemonDetails.name; else spinnerLoading" 
+            [pokemonDetails]="pokemonDetails"
+          >
+          </app-pokemon-details>
+          <ng-template #spinnerLoading>
+            <mz-spinner [color]="'red'" [size]="'small'"></mz-spinner>
+          </ng-template>
+        </mz-collapsible-item-body>
+      </mz-collapsible-item>
+    </mz-collapsible>
+  </div>
+</div>

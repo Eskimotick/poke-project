@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col l2 offset-l1">
+    <img [src]="pokemonDetails.sprites.front_default">
+    <span *ngFor="let type of pokemonDetails.types" [class]="'tag ' + type.type.name">
+      {{ type.type.name | titlecase }}
+    </span>
+  </div>
+  <div class="body col l2">
+    <p><b>Id:</b> {{ pokemonDetails.id }}</p>
+    <p><b>Height:</b> {{ pokemonDetails.height * 0.1 | number: '1.0-1' }} m</p> 
+    <p><b>Weight:</b> {{ pokemonDetails.weight * 0.1 | number: '1.0-1' }} kg</p>
+  </div>
+  <div class="col l3">
+    <p *ngFor="let stat of pokemonDetails.stats">
+      <b>{{ stat.stat.name | titlecase }}</b>: {{ stat.base_stat }}</p>
+  </div>
+  <div class="ability col l3">
+    <b>Abilities:</b>
+    <p *ngFor="let ability of pokemonDetails.abilities">
+      {{ ability.ability.name | titlecase }}
+      <span class="hidden" *ngIf="ability.is_hidden">(Hidden Ability)</span>
+    </p>
+  </div>
+</div>
