@@ -10,7 +10,7 @@ import { PokeApiService } from '../../services/poke-api.service';
 
 @NgModule({
   declarations: [
-    PokedexComponent, 
+    PokedexComponent,
     PokemonDetailsComponent
   ],
   imports: [

@@ -44,12 +44,18 @@ export class PokedexComponent implements OnInit {
         (res) => {
           this.pokemonDetails = res;
           if (!this.isColapActive) {
-            console.log('hello');
-            this.pokemonPage.map(pokemon => {
-              if (!(pokemon.name === this.pokemonDetails.name)) {
-                console.log(this.pokemonDetails.id % 10);
+            if (!this.pokemonPage.find(pokemon => pokemon.name === this.pokemonDetails.name)) {
+              if (this.pokemonDetails.id % 10) {
+                this.currentPage = (Math.floor(this.pokemonDetails.id / 10)) + 1;
+              } else {
+                this.currentPage = this.pokemonDetails.id / 10;
               }
-            });
+              this.onPageChange(this.currentPage);
+            }
+            this.isColapActive = true;
+            setTimeout(() => {
+              this.collapsibleRef.open(this.pokemonPage.findIndex(pokemon => pokemon.name === this.pokemonDetails.name));
+            }, 500);
           }
         });
     });
@@ -57,7 +63,6 @@ export class PokedexComponent implements OnInit {
 
   // repaginando os pokemons de acordo com a página que está
   onPageChange(pageNumber) {
-    this.currentPage = pageNumber;
     let repage = (pageNumber * 10) - 10;
     this.pokemonPage = [];
     for (let i = 0; i < 10 && this.pokemons.results[repage]; i++, repage++) {
@@ -67,16 +72,18 @@ export class PokedexComponent implements OnInit {
 
   // pegando o pokemon que foi clicado e passando por query param seu nome
   collapsible() {
+    let activated = false;
     this.collapsibleRef.items._results.map(
       (elem, index) => {
         if (elem.childrenElement[0].className === 'active') {
           this.isColapActive = true;
+          activated = true;
           this.router.navigate(['/pokedex'], {
             queryParams: {
               pokemon: this.pokemonPage[index].name
             }
           });
-        } else {
+        } else if (!activated) {
           this.isColapActive = false;
         }
       }
